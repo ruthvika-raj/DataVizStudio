@@ -106,7 +106,6 @@ export function EncodingPanel() {
         {hasEncodings && (
           <button
             onClick={clearAll}
-            ClearAll
             onMouseEnter={() => setHoveredClear(true)}
             onMouseLeave={() => setHoveredClear(false)}
             style={{
