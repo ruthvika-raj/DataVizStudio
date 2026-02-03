@@ -19,9 +19,10 @@ const TYPE_LABELS: Record<FieldType, string> = {
 interface EncodingShelfProps {
   channel: EncodingChannel;
   label: string;
+  isClearing?: boolean;
 }
 
-export function EncodingShelf({ channel, label }: EncodingShelfProps) {
+export function EncodingShelf({ channel, label, isClearing }: EncodingShelfProps) {
   const { state, assignField, removeField } = useApp();
   const [isOver, setIsOver] = useState(false);
   const [isHoveredRemove, setIsHoveredRemove] = useState(false);
@@ -124,7 +125,7 @@ export function EncodingShelf({ channel, label }: EncodingShelfProps) {
               backgroundColor: 'var(--color-bg-secondary)',
               border: '1px solid var(--color-border)',
               borderRadius: '6px',
-              animation: 'fadeIn 0.2s ease-out',
+              animation: isClearing ? 'glowOut 0.4s ease-out forwards' : 'fadeIn 0.2s ease-out',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>

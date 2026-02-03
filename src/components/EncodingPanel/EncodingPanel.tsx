@@ -56,8 +56,18 @@ const SECTIONS: EncodingSection[] = [
 export function EncodingPanel() {
   const { clearAll, state } = useApp();
   const [hoveredClear, setHoveredClear] = useState(false);
+  const [isClearing, setIsClearing] = useState(false);
 
   const hasEncodings = Object.keys(state.encodings).length > 0;
+
+  const handleClearAll = () => {
+    if (!hasEncodings || isClearing) return;
+    setIsClearing(true);
+    setTimeout(() => {
+      clearAll();
+      setIsClearing(false);
+    }, 400);
+  };
 
   return (
     <aside
@@ -103,19 +113,18 @@ export function EncodingPanel() {
             Map data to visual properties
           </p>
         </div>
-        {hasEncodings && (
-          <button
-            onClick={clearAll}
-            onMouseEnter={() => setHoveredClear(true)}
-            onMouseLeave={() => setHoveredClear(false)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '6px 10px',
-              fontSize: '11px',
-              fontWeight: 500,
-              backgroundColor: hoveredClear
+        <button
+          onClick={handleClearAll}
+          onMouseEnter={() => setHoveredClear(true)}
+          onMouseLeave={() => setHoveredClear(false)}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '6px 10px',
+            fontSize: '11px',
+            fontWeight: 500,
+            backgroundColor: hoveredClear
                 ? 'rgba(239, 68, 68, 0.15)'
                 : 'rgba(239, 68, 68, 0.08)',
               color: '#ef4444',
@@ -126,7 +135,7 @@ export function EncodingPanel() {
               letterSpacing: '0.02em',
             }}
           >
-            <svg
+          <svg
               width="12"
               height="12"
               viewBox="0 0 24 24"
@@ -139,11 +148,9 @@ export function EncodingPanel() {
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
-            Clear
+            Clear All
           </button>
-        )}
       </div>
-
       {/* Sections */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', flex: 1 }}>
         {SECTIONS.map((section, sectionIndex) => (
@@ -184,7 +191,7 @@ export function EncodingPanel() {
             {/* Channels */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {section.channels.map(({ channel, label }) => (
-                <EncodingShelf key={channel} channel={channel} label={label} />
+                <EncodingShelf key={channel} channel={channel} label={label} isClearing={isClearing} />
               ))}
             </div>
           </div>
